@@ -22,7 +22,7 @@ async function searchCountriesApi(name) {
 }
 
 function searchCustomCountries(name) {
-  return customCountries.filter((country) => country.name.toLowerCase().includes(name))
+  return customCountries.filter((country) => country.name.toLowerCase().includes(name)).slice(0, 5)
 }
 
 async function getCountries(name) {
