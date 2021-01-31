@@ -1,6 +1,6 @@
 # Country Search Backend
 
-This api is created using Serverless Framework and hoster on AWS
+This api is created using Serverless Framework, NodeJs and DynamoDb and hosted on AWS
 
 ## Requirements
 
