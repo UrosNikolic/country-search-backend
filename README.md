@@ -12,5 +12,5 @@ This api is created using Serverless Framework and hoster on AWS
 
 - go to root of the project and run ```sls deploy```
 
-#NOTE
-For convenience this api is already hosted and API url will be provided by me
+# NOTE
+**For convenience this api is already hosted and API url will be provided by me**
