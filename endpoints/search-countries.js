@@ -12,11 +12,11 @@ function removeDuplicates(countriesApiData, customCountriesData) {
 
 async function searchCountriesApi(name) {
   try {
-    console.log('COUNTRIES_API_URL ', process.env)
     const { data } = await axios.get(`${COUNTRIES_API_URL}/rest/v2/name/${name}?fields=name;flag`)
 
     return data
   } catch (err) {
+    console.warn(`Error finding country ${name}`, err)
     return []
   }
 }
