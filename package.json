@@ -1,0 +1,21 @@
+{
+  "name": "auto-complete-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@middy/core": "^2.0.0-alpha.3",
+    "@middy/http-error-handler": "^2.0.0-alpha.3",
+    "@middy/http-json-body-parser": "^2.0.0-alpha.3",
+    "axios": "^0.21.1",
+    "http-errors": "^1.8.0",
+    "serverless-dotenv-plugin": "^3.1.0",
+    "serverless-iam-roles-per-function": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

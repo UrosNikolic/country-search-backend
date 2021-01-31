@@ -1,0 +1,118 @@
+service: auto-complete-backend
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-dotenv-plugin
+
+custom:
+  dotenv:
+    required:
+      file: true
+    include:
+      - COUNTRIES_API_URL
+
+functions:
+  countries-search:
+    handler: endpoints/search-countries.handler
+    memorySize: 1024
+    events:
+      - http:
+          path: /countries/{name}
+          method: get
+          cors: true
+    environment:
+      COUNTRIES_API_URL: ${env:COUNTRIES_API_URL}
+
+
+  get-selected-countries:
+    handler: endpoints/get-selected-countries.handler
+    memorySize: 1024
+    events:
+      - http:
+          path: /countries-list
+          method: get
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: !GetAtt CountryListTable.Arn
+    environment:
+      countryListTable: !Ref CountryListTable
+
+  add-selected-country:
+    handler: endpoints/add-selected-country.handler
+    memorySize: 1024
+    events:
+      - http:
+          path: /countries-list
+          method: post
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:PutItem
+        Resource: !GetAtt CountryListTable.Arn
+    environment:
+      countryListTable: !Ref CountryListTable
+
+  delete-selected-country:
+    handler: endpoints/delete-selected-country.handler
+    memorySize: 1024
+    events:
+      - http:
+          path: /countries-list/{name}
+          method: delete
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+          - dynamodb:Query
+        Resource: !GetAtt CountryListTable.Arn
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: !Sub '${CountryListTable.Arn}/index/*'
+    environment:
+      countryListTable: !Ref CountryListTable
+
+resources:
+  Resources:
+    CountryListTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+          - AttributeName: GSI1PK
+            AttributeType: S
+          - AttributeName: GSI1SK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: GSI1
+            KeySchema:
+              - AttributeName: GSI1PK
+                KeyType: HASH
+              - AttributeName: GSI1SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: 'ALL'
+
+  Outputs:
+    CountryListTable:
+      Value: !Ref CountryListTable
