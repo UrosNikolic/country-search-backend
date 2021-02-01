@@ -20,6 +20,7 @@ functions:
   countries-search:
     handler: endpoints/search-countries.handler
     memorySize: 1024
+    timeout: 60
     events:
       - http:
           path: /countries/{name}
@@ -32,6 +33,7 @@ functions:
   get-selected-countries:
     handler: endpoints/get-selected-countries.handler
     memorySize: 1024
+    timeout: 60
     events:
       - http:
           path: /countries-list
@@ -48,6 +50,7 @@ functions:
   add-selected-country:
     handler: endpoints/add-selected-country.handler
     memorySize: 1024
+    timeout: 60
     events:
       - http:
           path: /countries-list
@@ -65,6 +68,7 @@ functions:
   delete-selected-country:
     handler: endpoints/delete-selected-country.handler
     memorySize: 1024
+    timeout: 60
     events:
       - http:
           path: /countries-list/{name}
